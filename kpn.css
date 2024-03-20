@@ -1,0 +1,15 @@
+#toTop {
+    display: none;
+    position: fixed;
+    bottom: 75px;
+    right: 10px;
+    z-index: 9999;
+}
+#toTop a {
+    background: #073A3F;
+    border: 2px solid #FFF;
+}
+#toTop svg {
+    width: 20px;
+    height: auto;
+}

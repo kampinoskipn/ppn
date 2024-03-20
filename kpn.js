@@ -108,7 +108,7 @@
 				}
 				myButton = document.querySelector('#toTop');
 				function scrollFunction() {
-					if (document.documentElement.scrollTop > 1100) {
+					if (document.documentElement.scrollTop > 1000) {
 						myButton.style.display = 'block';
 					} else {
 						myButton.style.display = 'none';

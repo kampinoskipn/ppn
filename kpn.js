@@ -2,6 +2,14 @@
 	document.addEventListener('DOMContentLoaded', (e) => {
 		const pathname = document.location.pathname;
 		if (!pathname.includes('bip') || !pathname.includes('sklep')) {
+			!(function () {
+				let el = document.querySelector('.menu-icon-eu');
+				let wrapper = document.createElement('a');
+				wrapper.setAttribute('href', '/projekty-unijne');
+				wrapper.setAttribute('aria-label', 'Projekty unijne');
+				el.parentNode.insertBefore(wrapper, el);
+				wrapper.appendChild(el);
+			})();
 			/* Powrót do kategorii nadrzędnej */
 			!(function () {
 				const list =

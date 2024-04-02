@@ -1,7 +1,7 @@
 (function () {
 	document.addEventListener('DOMContentLoaded', (e) => {
 		const pathname = document.location.pathname;
-		if (!pathname.includes('bip') || !pathname.includes('sklep') || !pathname.includes('/mapa-parku')) {
+		if (!pathname.includes('bip') && !pathname.includes('sklep') && !pathname.includes('/mapa-parku')) {
 			!(function () {
 				let el = document.querySelector('.menu-icon-eu');
 				let wrapper = document.createElement('a');

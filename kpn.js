@@ -16,7 +16,6 @@
 					wrapper.appendChild(el);
 				}
 			})();
-			/* Powrót do kategorii nadrzędnej */
 			!(function () {
 				const list =
 						document.getElementsByClassName('breadcrumb__item'),
@@ -37,7 +36,6 @@
 					}
 				}
 			})();
-			/* Ustawia domyślny banner na nowej stronie */
 			!(function () {
 				const bannerImage = document.querySelector('.banner__image');
 				const html =
@@ -49,8 +47,6 @@
 					bannerImage.insertAdjacentHTML('beforeend', html);
 				}
 			})();
-
-			/* Usuwa ikonę bilety z mobile */
 			!(function () {
 				const e = document.querySelector(
 						'a.menu__button.menu__button--mobile',
@@ -64,8 +60,6 @@
 						e.remove();
 				}
 			})();
-
-			/* Usuwa wdowy z tekstu */
 			(function () {
 				const getHeader = document.querySelectorAll(
 					'h2.banner__content__text',
@@ -94,17 +88,13 @@
 						element.innerHTML = newStr;
 					});
 				}
-
 				if (getHeader !== null) {
 					removeWidows(getHeader);
 				}
-
 				if (getSectTwoCols !== null) {
 					removeWidows(getSectTwoCols);
 				}
 			})();
-
-			/* Dodaje przycisk "do góry" */
 			(function () {
 				const button =
 					'<div id="toTop"><a class="btn btn--white information-block__btn back__btn_user"  onclick="lenis.scrollTo(\'top\')"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-angle-up fa-w-10 fa-3x"><path fill="white" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z" class=""></path></svg></a></div>';
@@ -122,9 +112,6 @@
 					}
 				}
 				window.addEventListener('scroll', scrollFunction);
-				/* window.onscroll = function () {
-					scrollFunction();
-				}; */
 			})();
 		}
 	});

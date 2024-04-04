@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const whiteBIP = '/uploads/files/660d16e0cbcd9361647248.png';
 		const redBIP = '/uploads/files/660d0ae3d3e4a349043535.png';
 		const getHeader = document.querySelector('header.menu');
-
 		const menuInner = document.querySelector('.menu__controls__inner');
-
 		if (getHeader != null) {
 			menuInner.insertAdjacentHTML('beforeend', html);
 		}
@@ -21,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				? (getBip.src = whiteBIP)
 				: (getBip.src = redBIP);
 		}
-
 		function changeImg(headerClass) {
 			window.location.pathname == '/' && headerClass == true
 				? (getBip.src = whiteBIP)
@@ -34,12 +31,5 @@ document.addEventListener('DOMContentLoaded', () => {
 				changeImg(headerClass);
 			}
 		});
-		/* window.onscroll = function () {
-			let headerClass =
-				getHeader.classList.contains('filter-transparent');
-			if (headerClass !== null) {
-				changeImg(headerClass);
-			}
-		}; */
 	})();
 });

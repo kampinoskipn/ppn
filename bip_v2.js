@@ -12,19 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		const menuInner = document.querySelector('.menu__controls__inner');
 		if (getHeader != null) {
 			menuInner.insertAdjacentHTML('beforeend', html);
-        }
+		}
 
 		const getBip = document.querySelectorAll(
 			'.menu__controls__button-container-bip img',
 		);
-        if (getBip.length == 2) {
-            window.location.pathname == '/' ? getBip[1].style.display = 'block' : getBip[0].style.display = 'none'
-        }
-
+		if (getBip.length == 2) {
+			window.location.pathname == '/'
+				? (getBip[1].style.display = 'none')
+				: (getBip[0].style.display = 'none');
+		}
 
 		function changeImg(headerClass) {
-			window.location.pathname == '/' && headerClass == true
-				? getBip[0].style.display = 'none' : getBip[1].style.display = 'none'
+			if (window.location.pathname == '/' && headerClass == true) {
+				getBip[1].style.display = 'none';
+				getBip[0].style.display = 'block';
+			} else {
+				getBip[0].style.display = 'none';
+				getBip[1].style.display = 'block';
+			}
 		}
 		window.addEventListener('scroll', function () {
 			let headerClass =

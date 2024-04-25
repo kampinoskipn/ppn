@@ -14,6 +14,8 @@
 			img.parentElement.insertAdjacentHTML('beforeend', template);
 			img.remove();
 		});
-		GLightbox();
+		setTimeout(() => {
+			GLightbox();
+		}, 1000);
 	}
 })();

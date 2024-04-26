@@ -7,9 +7,9 @@
 			!pathname.includes('/mapa-parku')
 		) {
 			!(function () {
-				let el = document.querySelector('.menu-icon-eu');
+				const el = document.querySelector('.menu-icon-eu');
 				if (el != null) {
-					let wrapper = document.createElement('a');
+					const wrapper = document.createElement('a');
 					wrapper.setAttribute('href', '/projekty-unijne');
 					wrapper.setAttribute('aria-label', 'Projekty unijne');
 					el.parentNode.insertBefore(wrapper, el);
@@ -61,10 +61,10 @@
 				}
 			})();
 			(function () {
-				const getHeader = document.querySelectorAll(
+				let getHeader = document.querySelectorAll(
 					'h2.banner__content__text',
 				);
-				const getSectTwoCols =
+				let getSectTwoCols =
 					document.querySelectorAll('.block__text');
 
 				function removeWidows(blocks) {
@@ -96,7 +96,9 @@
 				}
 			})();
 			(function () {
-				const button =
+				let ofBtn = document.querySelector('a.btn-skip.btn-skip--base');
+				if (ofBtn === null || ofBtn.clientHeight === 0) {
+					const button =
 					'<div id="toTop"><a class="btn btn--white information-block__btn back__btn_user"  onclick="lenis.scrollTo(\'top\')"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-angle-up fa-w-10 fa-3x"><path fill="white" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z" class=""></path></svg></a></div>';
 				const getMain = document.querySelector('main');
 				let myButton = document.querySelector('#toTop');
@@ -112,6 +114,7 @@
 					}
 				}
 				window.addEventListener('scroll', scrollFunction);
+				}
 			})();
 		}
 	});

@@ -71,7 +71,7 @@
 					blocks.forEach(function (element) {
 						let splited = element.innerHTML
 							.trim()
-							.replace('  ', ' ');
+							.replace(/\s{2,}/g,' ');
 						splited = splited.split(' ');
 						splited = splited.map(function (item) {
 							return item.length <= 2 &&

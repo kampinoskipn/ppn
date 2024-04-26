@@ -1,7 +1,10 @@
 (function () {
 	document.addEventListener('DOMContentLoaded', (e) => {
-		if (window.location.pathname === '/komunikaty-turystyczne') {
-			var imgs = document.querySelectorAll('.information__content img');
+		var imgs = document.querySelectorAll('.information__content img');
+		if (
+			window.location.pathname === '/komunikaty-turystyczne' &&
+			imgs.length > 0
+		) {
 			imgs.forEach(function (img) {
 				debugger;
 				let url = img.src;

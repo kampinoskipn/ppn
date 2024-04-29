@@ -6,12 +6,10 @@
 			imgs.length > 0
 		) {
 			imgs.forEach(function (img) {
-				debugger;
 				const url = img.src;
-				const cl = img.className ? img.className : " ";
-				const alt = img.alt ? img.alt : " ";
+				const alt = img.alt;
 				var template = `<a href=${url} class="glightbox">
-	<img class=${cl} src=${url} alt="${alt}" height="84">
+	<img src=${url} alt="${alt}" height="84">
 	</a>`;
 				img.parentElement.insertAdjacentHTML('beforeend', template);
 				img.remove();

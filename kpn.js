@@ -60,60 +60,106 @@
 						e.remove();
 				}
 			})();
-			(function () {
-				let getHeader = document.querySelectorAll(
+			(() => {
+				const getHeader = document.querySelectorAll(
 					'h2.banner__content__text',
 				);
-				let getSectTwoCols =
+				const getSectTwoCols =
 					document.querySelectorAll('.block__text');
 
-				function removeWidows(blocks) {
-					blocks.forEach(function (element) {
+				const formatTypo = (blocks, widows) => {
+					blocks.forEach((element) => {
 						let splited = element.innerHTML
 							.trim()
-							.replace(/\s{2,}/g,' ');
-						splited = splited.split(' ');
-						splited = splited.map(function (item) {
-							return item.length <= 2 &&
+							.replace(
+								/&nbsp;|\s{2,}|<br><br>|<\/div>/g,
+								(match) => {
+									switch (match) {
+										case '&nbsp;':
+											return ' ';
+										case '<br><br>':
+											return ' <br><br> ';
+										case '</div>':
+											return ' </div>';
+										default:
+											return ' ';
+									}
+								},
+							)
+							.split(' ');
+						if (widows) {
+							const indices = splited
+								.reduce(
+									(acc, element, index) =>
+										element.includes('<br>') ||
+										element.includes('</p>') ||
+										element.includes('</div>')
+											? [...acc, index]
+											: acc,
+									[],
+								)
+								.reverse();
+							indices.forEach((idx) =>
+								splited.splice(
+									idx - 2,
+									0,
+									splited.splice(idx - 2, 2).join('&nbsp;'),
+								),
+							);
+							splited.splice(
+								splited.length - 2,
+								2,
+								splited
+									.slice(splited.length - 2)
+									.join('&nbsp;'),
+							);
+						}
+						const newStr = splited
+							.map((item) =>
+								item.length <= 2 &&
 								!item.includes('.') &&
-								!item.includes('<')
-								? item + '&nbsp;'
-								: item;
-						});
-						let newStr = splited
+								!item.includes('<') &&
+								!item.endsWith(';')
+									? item + '&nbsp;'
+									: item,
+							)
 							.join(' ')
-							.replaceAll('&nbsp; ', '&nbsp;')
-							.replaceAll(' r.', '&nbsp;r.')
-							.replaceAll(' w.', '&nbsp;w.');
+							.replace(/&nbsp; | r\.| w\./g, (match) => {
+								if (match === '&nbsp; ') {
+									return '&nbsp;';
+								} else if (match.trim().endsWith('.')) {
+									return `&nbsp;${match.trim()}`;
+								}
+							});
 						element.innerHTML = newStr;
 					});
-				}
+				};
 				if (getHeader !== null) {
-					removeWidows(getHeader);
+					formatTypo(getHeader, false);
 				}
 				if (getSectTwoCols !== null) {
-					removeWidows(getSectTwoCols);
+					formatTypo(getSectTwoCols, true);
 				}
 			})();
 			(function () {
 				let ofBtn = document.querySelector('a.btn-skip.btn-skip--base');
 				if (ofBtn === null || ofBtn.clientHeight === 0) {
 					const button =
-					'<div id="toTop"><a class="btn btn--white information-block__btn back__btn_user"  onclick="lenis.scrollTo(\'top\')"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-angle-up fa-w-10 fa-3x"><path fill="white" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z" class=""></path></svg></a></div>';
-				const getMain = document.querySelector('main');
-				let myButton = document.querySelector('#toTop');
-				if (myButton == null) {
-					getMain.insertAdjacentHTML('beforeend', button);
-				}
-				myButton = document.querySelector('#toTop');
-				function scrollFunction() {
-					if (document.documentElement.scrollTop > 1000) {
-						myButton.style.display = 'block';
-					} else {
-						myButton.style.display = 'none';
+						'<div id="toTop"><a class="btn btn--white information-block__btn back__btn_user"  onclick="lenis.scrollTo(\'top\')"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-angle-up fa-w-10 fa-3x"><path fill="white" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z" class=""></path></svg></a></div>';
+					const getMain = document.querySelector('main');
+					let myButton = document.querySelector('#toTop');
+					if (myButton == null) {
+						getMain.insertAdjacentHTML('beforeend', button);
 					}
-				}
-				window.addEventListener('scroll', scrollFunction);
+					myButton = document.querySelector('#toTop');
+					function scrollFunction() {
+						if (document.documentElement.scrollTop > 1000) {
+							myButton.style.display = 'block';
+						} else {
+							myButton.style.display = 'none';
+						}
+					}
+					window.addEventListener('scroll', scrollFunction);
 				}
 			})();
 		}

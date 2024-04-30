@@ -69,7 +69,8 @@
 
 				const formatTypo = (blocks, widows) => {
 					blocks.forEach((element) => {
-						let splited = element.innerHTML
+						if (!element.innerHTML.includes('<table')) {
+							let splited = element.innerHTML
 							.trim()
 							.replace(
 								/&nbsp;|\s{2,}|<br><br>|<\/div>/g,
@@ -132,9 +133,11 @@
 								}
 							});
 						element.innerHTML = newStr;
+						}
+
 					});
 				};
-				if (getHeader !== null) {
+				if (getHeader !== null && !getHeader === "") {
 					formatTypo(getHeader, false);
 				}
 				if (getSectTwoCols !== null) {

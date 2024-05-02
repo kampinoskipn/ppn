@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const whiteBIP = '/uploads/files/660d16e0cbcd9361647248.png';
 		const redBIP = '/uploads/files/660d0ae3d3e4a349043535.png';
 		const html = `<div class="menu__controls__button-container-bip">
-		<a href="https://bip.kampinoski-pn.gov.pl" aria-label="Biuletym informacji publicznej Kampinoskiego Parku Narodowego" target="_blank" rel=”noopener”>
+		<a class="bip__link" href="https://bip.kampinoski-pn.gov.pl" aria-label="Biuletym informacji publicznej Kampinoskiego Parku Narodowego. Strona otworzy się w nowym oknie." target="_blank" rel=”noopener”>
 			<img src="${whiteBIP}" alt="BIP logo">
 			<img src="${redBIP}" alt="BIP logo">
 		</a></div>`;

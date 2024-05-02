@@ -8,6 +8,7 @@
 		) {
 			!(function () {
 				const el = document.querySelector('.menu-icon-eu');
+				const svgTitles = el.querySelectorAll('title');
 				if (el != null) {
 					const wrapper = document.createElement('a');
 					wrapper.setAttribute('href', '/projekty-unijne');
@@ -15,6 +16,9 @@
 					el.parentNode.insertBefore(wrapper, el);
 					wrapper.appendChild(el);
 				}
+				svgTitles.forEach((title) => {
+					title.innerHTML = 'Projekty unijne';
+				});
 			})();
 			!(function () {
 				const list =

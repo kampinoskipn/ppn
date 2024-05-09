@@ -106,19 +106,21 @@
 										[],
 									)
 									.reverse();
-								indices.forEach((idx) =>
-									splited.splice(
-										idx - 2,
-										0,
-										splited
-											.splice(idx - 2, 2)
-											.join('&nbsp;'),
-									),
-								);
-								/* splited.splice(
-								splited.length - 2,	2,splited.slice(splited.length - 2).join('&nbsp;'),
-							); */
-							}
+								indices.forEach((idx) => {
+											if (idx > 2) {
+												splited.splice(
+													idx - 2,
+													0,
+													splited
+														.splice(idx - 2, 2)
+														.join('&nbsp;')
+												);
+											}
+										});
+										 splited.splice(
+										splited.length - 2,	2,splited.slice(splited.length - 2).join('&nbsp;'),
+									);
+									}
 							const newStr = splited
 								.map((item) =>
 									item.length <= 2 &&

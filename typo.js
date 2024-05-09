@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 			});
 		};
-		if (getHeader !== null && !getHeader === '') {
+		if (getHeader !== null) {
 			formatTypo(getHeader, false);
 		}
 		if (getSectTwoCols !== null) {

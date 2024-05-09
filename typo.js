@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						.replace(/&nbsp;|\s{2,}|<br><br>|<\/div>/g, (match) => {
 							switch (match) {
 								case '&nbsp;':
-									return ' ';
+									return '';
 								case /\s{2,}/g:
 									return ' ';
 								case '<br><br>':

@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			formatTypo(getHeader, false);
 		}
 		if (getSectTwoCols !== null) {
-			formatTypo(getSectTwoCols, true);
+			formatTypo(getSectTwoCols, false);
 		}
 	})();
 });

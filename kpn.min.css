@@ -1,1 +1,1 @@
-#toTop{display:none;position:fixed;bottom:75px;right:10px;z-index:9999}#toTop a{background:#073a3f;border:2px solid #fff}#toTop svg{width:20px;height:auto}
+#toTop{display:none;position:fixed;bottom:75px;right:10px;z-index:9999}#toTop a{background:#073a3f;border:2px solid #fff}#toTop svg{width:20px;height:auto}.loadingspinner{pointer-events:none;width:1.5em;height:1.5em;border:.2em solid transparent;border-color:#eee;border-top-color:#ff6c00;border-radius:50%;animation:loadingspin 1s linear infinite}@keyframes loadingspin{100%{transform:rotate(360deg)}}

@@ -14,9 +14,10 @@
     height: auto;
 }
 .loadingspinner {
+	display: inline-block;
 	pointer-events: none;
-	width: 1.5em;
-	height: 1.5em;
+	width: 1em;
+	height: 1em;
 	border: 0.2em solid transparent;
 	border-color: #eee;
 	border-top-color: #FF6C00;

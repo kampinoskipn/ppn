@@ -8,22 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (!element.innerHTML.includes('<table')) {
 					let splited = element.innerHTML
 						.trim()
-						.replace(/&nbsp;|\s{2,}|<br><br>|<\/div>/g, (match) => {
-							switch (match) {
-								case '&nbsp;':
-									return '';
-								case /\s{2,}/g:
-									return ' ';
-								case '<br><br>':
-									return ' <br><br>';
-								case '<br>':
-									return ' <br>';
-								case '</div>':
-									return ' </div>';
-								default:
-									return ' ';
-							}
-						})
+						.replace(
+							/&nbsp;|\s{2,}|(?:<br\s*\/?>\s*){1,2}|<\/p>|<\/div>/g,
+							(match) => {
+								switch (match) {
+									case '&nbsp;':
+										return '';
+									case /\s{2,}/g:
+										return ' ';
+									case '<br><br>':
+										return ' <br><br>';
+									case '<br>':
+										return ' <br>';
+									case '</div>':
+										return ' </div>';
+									case '</p>':
+										return ' </p>';
+									default:
+										return ' ';
+								}
+							},
+						)
 						.split(' ');
 					if (widows) {
 						const indices = splited
@@ -77,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			formatTypo(getHeader, false);
 		}
 		if (getSectTwoCols !== null) {
-			formatTypo(getSectTwoCols, true);
+			formatTypo(getSectTwoCols, false);
 		}
 	})();
 });

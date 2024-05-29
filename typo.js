@@ -25,33 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 							}
 						})
 						.split(' ');
-					if (widows) {
-						const indices = splited
-							.reduce(
-								(acc, element, index) =>
-									element.includes('<br>') ||
-									element.includes('</p>') ||
-									element.includes('</div>')
-										? [...acc, index]
-										: acc,
-								[],
-							)
-							.reverse();
-						indices.forEach((idx) => {
-							if (idx > 2) {
-								splited.splice(
-									idx - 2,
-									0,
-									splited.splice(idx - 2, 2).join('&nbsp;'),
-								);
-							}
-						});
-						splited.splice(
-							splited.length - 2,
-							2,
-							splited.slice(splited.length - 2).join('&nbsp;'),
-						);
-					}
+
 					const newStr = splited
 						.map((item) =>
 							item.length <= 2 &&

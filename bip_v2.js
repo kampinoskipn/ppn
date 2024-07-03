@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					<img src="${whiteBIP}" alt="BIP logo">
 					<img src="${redBIP}" alt="BIP logo">
 				</a></div>`;
-
 			const getHeader = document.querySelector('header.menu');
 			const menuInner = document.querySelector('.menu__controls__inner');
 			if (getHeader != null) {

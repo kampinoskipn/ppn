@@ -84,7 +84,7 @@
 			})();
 			//Add "Opublikowano" to the page
 			!(function () {
-				if (pathname === '/aktualnosci/' || pathname === '/') {
+				if (pathname === '/aktualnosci' || pathname === '/') {
 					elementObserve = window.document.querySelector(
 						'.articles-grid.js-pagination-result-container-news',
 					);

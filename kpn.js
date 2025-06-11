@@ -113,7 +113,7 @@
 									!date.innerText.includes('Opublikowano: ')
 								) {
 									date.innerText =
-										'Opublikowano: ' + date.innerText;
+										'Opublikowano: ' + date.dateTime;
 								}
 							});
 						}

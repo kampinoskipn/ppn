@@ -6,6 +6,7 @@
 			!pathname.includes('sklep') &&
 			!pathname.includes('/mapa-parku')
 		) {
+			// Add EU projects link
 			!(function () {
 				const el = document.querySelector('.menu-icon-eu');
 				const svgTitles = el.querySelectorAll('title');
@@ -20,6 +21,8 @@
 					title.innerHTML = 'Projekty unijne';
 				});
 			})();
+			// Add back button to breadcrumbs
+			// This function adds a "back to category" button to the last section of the page
 			!(function () {
 				const list =
 						document.getElementsByClassName('breadcrumb__item'),
@@ -40,17 +43,9 @@
 					}
 				}
 			})();
-			!(function () {
-				const bannerImage = document.querySelector('.banner__image');
-				const html =
-					'<img src="/uploads/files/65e05bf353037792234443.jpg" alt="baner" class="banner__image__inner">';
-				if (
-					bannerImage !== null &&
-					bannerImage.childElementCount === 0
-				) {
-					bannerImage.insertAdjacentHTML('beforeend', html);
-				}
-			})();
+
+			//Remove sklep link from mobile menu
+			// This function removes the "sklep" link from the mobile menu
 			!(function () {
 				const e = document.querySelector(
 						'a.menu__button.menu__button--mobile',
@@ -64,6 +59,8 @@
 						e.remove();
 				}
 			})();
+			// Add scroll to top button
+			// This function adds a "scroll to top" button to the page
 			(function () {
 				let ofBtn = document.querySelector('a.btn-skip.btn-skip--base');
 				if (ofBtn === null || ofBtn.clientHeight === 0) {
@@ -83,6 +80,45 @@
 						}
 					}
 					window.addEventListener('scroll', scrollFunction);
+				}
+			})();
+			//Add "Opublikowano" to the page
+			!(function () {
+				if (pathname === '/aktualnosci/' || pathname === '/') {
+					elementObserve = window.document.querySelector(
+						'.articles-grid.js-pagination-result-container-news',
+					);
+
+					if (elementObserve) {
+						var observer = new MutationObserver(function () {
+							addText();
+						});
+						observer.observe(elementObserve, {
+							subtree: true,
+							characterData: false,
+							childList: true,
+							attributes: false,
+						});
+					}
+
+					function addText() {
+						var pub_date = document.querySelectorAll(
+							'time.article-tile__publication-date',
+						);
+
+						if (pub_date.length > 0) {
+							pub_date.forEach(function (date) {
+								if (
+									date.hasAttribute('datetime') &&
+									!date.innerText.includes('Opublikowano: ')
+								) {
+									date.innerText =
+										'Opublikowano: ' + date.innerText;
+								}
+							});
+						}
+					}
+					addText();
 				}
 			})();
 		}

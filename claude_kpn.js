@@ -155,9 +155,6 @@
     function addPublicationDates(pathname) {
         if (pathname !== '/aktualnosci' && pathname !== '/') return;
 
-        const articlesGrid = document.querySelector(selectors.articlesGrid);
-        if (!articlesGrid) return;
-
         function updatePublicationDates() {
             const publicationDates = document.querySelectorAll(selectors.publicationDate);
 
@@ -172,14 +169,19 @@
         // Pierwsze uruchomienie
         updatePublicationDates();
 
-        // Observer dla dynamicznie ładowanej zawartości
-        const observer = new MutationObserver(updatePublicationDates);
-        observer.observe(articlesGrid, {
-            subtree: true,
-            childList: true,
-            attributes: false,
-            characterData: false
-        });
+        // Observer tylko na stronie aktualności (przycisk "pokaż więcej")
+        if (pathname === '/aktualnosci') {
+            const articlesGrid = document.querySelector(selectors.articlesGrid);
+            if (articlesGrid) {
+                const observer = new MutationObserver(updatePublicationDates);
+                observer.observe(articlesGrid, {
+                    subtree: true,
+                    childList: true,
+                    attributes: false,
+                    characterData: false
+                });
+            }
+        }
     }
 
     // 6. Maskowanie adresów email

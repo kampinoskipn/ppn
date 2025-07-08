@@ -268,7 +268,7 @@
 
 	// 10. Dodanie nagłówka z tytułu do BIP
 	function addBipHeading() {
-		const bipTitle = document.querySelector(selectors.bipHeadingElement);
+		const bipTitle = document.querySelector(selectors.bipTitleElement);
 		const bipHeading = document.querySelector(selectors.bipHeadingElement);
 		if (bipHeading && bipHeading.innerText === '') {
 			bipHeading.innerText = bipTitle.innerText;

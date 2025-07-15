@@ -270,6 +270,7 @@
 	function addBipHeading() {
 		const bipTitle = document.querySelector(selectors.bipTitleElement);
 		const bipHeading = document.querySelector(selectors.bipHeadingElement);
+		bipHeading.setAttribute('id', 'first');
 		if (bipHeading && bipHeading.innerText === '') {
 			bipHeading.innerText = bipTitle.innerText;
 		}

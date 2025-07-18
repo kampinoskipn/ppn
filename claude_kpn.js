@@ -36,6 +36,7 @@
 		// Funkcje specyficzne dla BIP
 		if (document.location.pathname.includes('/bip/')) {
 			addBipHeading();
+			addToBipMetaTitle();
 		}
 	});
 
@@ -266,15 +267,23 @@
 			.forEach((element) => element.parentElement?.remove());
 	}
 
-	// 10. Dodanie nagłówka z tytułu do BIP
+	// 10. Dodanie do nagłówka h2 tekstu z tytułu artykułu BIP
 	function addBipHeading() {
 		const bipTitle = document.querySelector(selectors.bipTitleElement);
 		const bipHeading = document.querySelector(selectors.bipHeadingElement);
-		if (bipHeading) {
+		if (bipHeading && !bipHeading.hasAttribute('id')) {
 			bipHeading.setAttribute('id', 'first');
 		}
 		if (bipHeading && bipHeading.innerText === '' && bipTitle) {
 			bipHeading.innerText = bipTitle.innerText;
+		}
+	}
+	// 11. Dodanie tekstu do tytułu do BIP w tagu
+	function addToBipMetaTitle() {
+		const titleAdd = "BIP — Kampinoski Park Narodowy — ";
+		const hTitle = document.querySelector('head title');
+		if (hTitle && hTitle.textContent && !hTitle.textContent.startsWith(titleAdd)) {
+			hTitle.textContent = titleAdd + hTitle.textContent;
 		}
 	}
 })();

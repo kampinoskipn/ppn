@@ -41,6 +41,7 @@
 		if (document.location.pathname.includes('/bip/')) {
 			addBipHeading();
 			addToBipMetaTitle();
+			addAriaLabelToBreadcrumbs();
 		}
 	});
 

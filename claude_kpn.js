@@ -14,8 +14,12 @@
 		publicationDate: 'time.article-tile__publication-date',
 		mailtoLinks: 'a[href^="mailto:"]',
 		informationBlockBtn: '.information-block__btn',
+		bipHeader: '#menu',
+		bipMenu: 'aside.bip-menu-left',
+		bipMenuHeader: 'h2.visuallyhidden',
 		bipTitleElement: 'span.bip-title__content__title',
 		bipHeadingElement: 'h2.bip__heading',
+		breadcrumb: 'nav[class*="breadcrumb"]',
 	};
 
 	document.addEventListener('DOMContentLoaded', () => {
@@ -50,6 +54,8 @@
 		cloakEmailAddresses();
 		removeMultikonto();
 		removeFormButtonFromZalatwSprawa(pathname);
+		addAriaRoleToBipMenu();
+		addAriaLabelToBreadcrumbs();
 	}
 
 	// 1. Dodanie linku do projektów unijnych
@@ -268,9 +274,18 @@
 	}
 
 	// 10. Dodanie do nagłówka h2 tekstu z tytułu artykułu BIP
+	// Dodanie id do nagłówka <h2> i menu
+	// zmiana z-index dla nagłówka BIP
 	function addBipHeading() {
 		const bipTitle = document.querySelector(selectors.bipTitleElement);
 		const bipHeading = document.querySelector(selectors.bipHeadingElement);
+		const bipMenu = document.querySelector(selectors.bipMenuHeader);
+		const bipHeader = document.querySelector(selectors.bipHeader);
+		if(bipHeader && bipHeader.hasAttribute('id') && bipMenu && !bipMenu.hasAttribute('id')) {
+			bipHeader.style.zIndex = 1;
+			bipHeader.removeAttribute('id');
+			bipMenu.setAttribute('id', 'menu');
+		}
 		if (bipHeading && !bipHeading.hasAttribute('id')) {
 			bipHeading.setAttribute('id', 'first');
 		}
@@ -284,6 +299,20 @@
 		const hTitle = document.querySelector('head title');
 		if (hTitle && hTitle.textContent && !hTitle.textContent.startsWith(titleAdd)) {
 			hTitle.textContent = titleAdd + hTitle.textContent;
+		}
+	}
+	// 12. Dodanie aria-role do menu BIP
+	function addAriaRoleToBipMenu() {
+		const bipMenu = document.querySelector(selectors.bipMenu);
+		if (bipMenu && !bipMenu.hasAttribute('role')) {
+			bipMenu.setAttribute('role', 'navigation');
+		}
+	}
+	// 13. Dodanie aria-label do breadcrumbs
+	function addAriaLabelToBreadcrumbs() {
+		const breadcrumb = document.querySelector(selectors.breadcrumb);
+		if (breadcrumb && !breadcrumb.hasAttribute('aria-label')) {
+			breadcrumb.setAttribute('aria-label', 'Ścieżka powrotu');
 		}
 	}
 })();

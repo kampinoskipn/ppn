@@ -1,7 +1,7 @@
 (function () {
 	// Cache dla często używanych selektorów
-	const selectors = {
-		menuIconEu: '.menu-icon-eu',
+    const selectors = {
+        menuIconEu: '.menu-icon-eu',
 		breadcrumbItem: '.breadcrumb__item',
 		sections: 'section',
 		mobileMenuButton: 'a.menu__button.menu__button--mobile',
@@ -48,9 +48,9 @@
 	function initializeMainPageFeatures(pathname) {
 		// Wszystkie funkcje dla głównych stron
 		addEuProjectsLink();
-		addBackButtonToBreadcrumbs();
-		removeMobileShopLink();
 		addScrollToTopButton();
+        addBackButtonToBreadcrumbs();
+		removeMobileShopLink();
 		addPublicationDates(pathname);
 		cloakEmailAddresses();
 		removeMultikonto();
@@ -81,13 +81,13 @@
 		const breadcrumbItems = document.querySelectorAll(
 			selectors.breadcrumbItem,
 		);
-		const sections = document.querySelectorAll(selectors.sections);
+		//const sections = document.querySelectorAll(selectors.sections);
 
-		if (breadcrumbItems.length === 0 || sections.length === 0) return;
-
-		const lastSection = sections[sections.length - 1];
-
-		if (lastSection.className === 'banner') return;
+		if (breadcrumbItems.length === 0/*  || sections.length === 0 */) return;
+		/* const lastSection = sections[sections.length - 1];
+		if (lastSection.className === 'banner') return; */
+        const mainContentBlock = document.querySelector(selectors.main);
+        if (!mainContentBlock) return;
 
 		const secondLastCrumb = breadcrumbItems[breadcrumbItems.length - 2];
 		if (!secondLastCrumb?.firstElementChild?.href) return;
@@ -101,7 +101,7 @@
             </section>
         `;
 
-		lastSection.insertAdjacentHTML('afterend', backButtonHtml);
+		mainContentBlock.insertAdjacentHTML('beforeend', backButtonHtml);
 	}
 
 	// 3. Usunięcie linku sklepu z menu mobilnego

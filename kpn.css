@@ -9,6 +9,9 @@
     background: #073A3F;
     border: 2px solid #FFF;
 }
+#toTop a:focus {
+	outline: 4px solid #ff0000;
+}
 #toTop svg {
     width: 20px;
     height: auto;

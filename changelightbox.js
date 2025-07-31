@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						i: i + 1,
 						cl: adCl,
 					};
-				let template = `<button class="js-fullscreen gallery-5093 ${imgData.cl}" tabindex="0"
+				let template = `<button class="js-fullscreen gallery-5093 ${imgData.cl}" tabindex="-1"
 	                data-image="${imgData.hiImage}"
     	            data-description=""
         	        data-alt="${imgData.alt}" data-start="${imgData.i}"

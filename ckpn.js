@@ -1,7 +1,7 @@
 (function () {
 	// Cache dla często używanych selektorów
-    const selectors = {
-        menuIconEu: '.menu-icon-eu',
+	const selectors = {
+		menuIconEu: '.menu-icon-eu',
 		breadcrumbItem: '.breadcrumb__item',
 		sections: 'section',
 		mobileMenuButton: 'a.menu__button.menu__button--mobile',
@@ -9,7 +9,6 @@
 		skipButton: 'a.btn-skip.btn-skip--base',
 		main: 'main',
 		toTop: '#toTop',
-		scrollToTop: '#scrollToTop',
 		articlesGrid: '.articles-grid.js-pagination-result-container-news',
 		publicationDate: 'time.article-tile__publication-date',
 		mailtoLinks: 'a[href^="mailto:"]',
@@ -49,7 +48,7 @@
 		// Wszystkie funkcje dla głównych stron
 		addEuProjectsLink();
 		addScrollToTopButton();
-        addBackButtonToBreadcrumbs();
+		addBackButtonToBreadcrumbs();
 		removeMobileShopLink();
 		addPublicationDates(pathname);
 		cloakEmailAddresses();
@@ -83,22 +82,23 @@
 		);
 		//const sections = document.querySelectorAll(selectors.sections);
 
-		if (breadcrumbItems.length === 0/*  || sections.length === 0 */) return;
+		if (breadcrumbItems.length === 0 /*  || sections.length === 0 */)
+			return;
 		/* const lastSection = sections[sections.length - 1];
 		if (lastSection.className === 'banner') return; */
-        const mainContentBlock = document.querySelector(selectors.main);
-        if (!mainContentBlock) return;
+		const mainContentBlock = document.querySelector(selectors.main);
+		if (!mainContentBlock) return;
 
 		const secondLastCrumb = breadcrumbItems[breadcrumbItems.length - 2];
 		if (!secondLastCrumb?.firstElementChild?.href) return;
 
 		const backButtonHtml = `
-            <section class="two-columns block-container container">
-                <a id="backBtn" class="btn btn--white information-block__btn back__btn_user"
+            <div class="two-columns block-container container">
+                <a id="backBtn" role="button" aria-label="Wróć do kategorii nadrzędnej: ${secondLastCrumb.textContent}" class="btn btn--white information-block__btn back__btn_user"
                    href="${secondLastCrumb.firstElementChild.href}">
                     Wróć do kategorii: ${secondLastCrumb.textContent}
                 </a>
-            </section>
+            </div>
         `;
 
 		mainContentBlock.insertAdjacentHTML('beforeend', backButtonHtml);
@@ -137,18 +137,17 @@
 		if (!main) return;
 
 		const buttonHtml = `
-            <div id="toTop">
-                <a id="scrollToTop" href="#main-content"
-                   class="btn btn--white information-block__btn back__btn_user"
-                   aria-label="przejdź do początku strony"
-                   onclick="lenis.scrollTo('top')">
+            <button id="toTop"
+                class="btn btn--white information-block__btn back__btn_user"
+                aria-label="Przejdź do początku strony"
+                onclick="lenis.scrollTo('top')">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas"
                          data-icon="angle-up" role="img" xmlns="http://www.w3.org/2000/svg"
                          viewBox="0 0 320 512" class="svg-inline--fa fa-angle-up fa-w-10 fa-3x">
                         <path fill="white" d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"></path>
                     </svg>
-                </a>
-            </div>
+            </button>
+
         `;
 
 		main.insertAdjacentHTML('beforeend', buttonHtml);
@@ -282,7 +281,12 @@
 		const bipHeading = document.querySelector(selectors.bipHeadingElement);
 		const bipMenu = document.querySelector(selectors.bipMenuHeader);
 		const bipHeader = document.querySelector(selectors.bipHeader);
-		if(bipHeader && bipHeader.hasAttribute('id') && bipMenu && !bipMenu.hasAttribute('id')) {
+		if (
+			bipHeader &&
+			bipHeader.hasAttribute('id') &&
+			bipMenu &&
+			!bipMenu.hasAttribute('id')
+		) {
 			bipHeader.style.zIndex = 1;
 			bipHeader.removeAttribute('id');
 			bipMenu.setAttribute('id', 'menu');
@@ -296,9 +300,13 @@
 	}
 	// 11. Dodanie tekstu do tytułu do BIP w tagu
 	function addToBipMetaTitle() {
-		const titleAdd = "BIP — Kampinoski Park Narodowy — ";
+		const titleAdd = 'BIP — Kampinoski Park Narodowy — ';
 		const hTitle = document.querySelector('head title');
-		if (hTitle && hTitle.textContent && !hTitle.textContent.startsWith(titleAdd)) {
+		if (
+			hTitle &&
+			hTitle.textContent &&
+			!hTitle.textContent.startsWith(titleAdd)
+		) {
 			hTitle.textContent = titleAdd + hTitle.textContent;
 		}
 	}

@@ -3,13 +3,12 @@
     position: fixed;
     bottom: 75px;
     right: 10px;
+	background: #073A3F;
+    border: 2px solid #FFF;
     z-index: 9999;
 }
-#toTop a {
-    background: #073A3F;
-    border: 2px solid #FFF;
-}
-#toTop a:focus {
+
+#toTop:focus {
 	outline: 4px solid #ff0000;
 }
 #toTop svg {

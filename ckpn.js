@@ -19,6 +19,7 @@
 		bipTitleElement: 'span.bip-title__content__title',
 		bipHeadingElement: 'h2.bip__heading',
 		breadcrumb: 'nav[class*="breadcrumb"]',
+		navMenu: '.menu__nav.nav.js-nav',
 	};
 
 	document.addEventListener('DOMContentLoaded', () => {
@@ -300,14 +301,14 @@
 	}
 	// 11. Dodanie tekstu do tytułu do BIP w tagu
 	function addToBipMetaTitle() {
-		const titleAdd = 'BIP — Kampinoski Park Narodowy — ';
+		const titleAdd = ' —BIP — Kampinoski Park Narodowy';
 		const hTitle = document.querySelector('head title');
 		if (
 			hTitle &&
 			hTitle.textContent &&
 			!hTitle.textContent.startsWith(titleAdd)
 		) {
-			hTitle.textContent = titleAdd + hTitle.textContent;
+			hTitle.textContent = + hTitle.textContent + titleAdd;
 		}
 	}
 	// 12. Dodanie aria-role do menu BIP
@@ -317,11 +318,15 @@
 			bipMenu.setAttribute('role', 'navigation');
 		}
 	}
-	// 13. Dodanie aria-label do breadcrumbs
+	// 13. Dodanie aria-label do nav
 	function addAriaLabelToBreadcrumbs() {
 		const breadcrumb = document.querySelector(selectors.breadcrumb);
+		const navMenu = document.querySelector(selectors.navMenu);
 		if (breadcrumb && !breadcrumb.hasAttribute('aria-label')) {
 			breadcrumb.setAttribute('aria-label', 'Ścieżka powrotu');
+		}
+		if (navMenu && !navMenu.hasAttribute('aria-label')) {
+			navMenu.setAttribute('aria-label', 'Główne menu nawigacyjne');
 		}
 	}
 })();

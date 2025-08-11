@@ -42,6 +42,7 @@
 			addBipHeading();
 			addToBipMetaTitle();
 			addAriaLabelToBreadcrumbs();
+			addAriaRoleToBipMenu();
 		}
 	});
 
@@ -301,14 +302,14 @@
 	}
 	// 11. Dodanie tekstu do tytułu do BIP w tagu
 	function addToBipMetaTitle() {
-		const titleAdd = ' —BIP — Kampinoski Park Narodowy';
+		const titleAdd = ' — BIP — Kampinoski Park Narodowy';
 		const hTitle = document.querySelector('head title');
 		if (
 			hTitle &&
 			hTitle.textContent &&
 			!hTitle.textContent.startsWith(titleAdd)
 		) {
-			hTitle.textContent = + hTitle.textContent + titleAdd;
+			hTitle.textContent = hTitle.textContent + titleAdd;
 		}
 	}
 	// 12. Dodanie aria-role do menu BIP

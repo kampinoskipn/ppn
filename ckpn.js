@@ -1,8 +1,7 @@
 (function () {
 	document.addEventListener('DOMContentLoaded', () => {
 		const pathname = document.location.pathname;
-		const isSpecialPage =
-			pathname.includes('sklep') || pathname.includes('/mapa-parku');
+		const isSpecialPage = pathname.includes('/bip') ||pathname.includes('/sklep') || pathname.includes('/mapa-parku');
 		const bipPage = pathname.includes('/bip');
 
 		if (!isSpecialPage) {
@@ -17,18 +16,6 @@
 		if (bipPage) {
 			initializeBipPageFeatures(pathname);
 		}
-
-		/* if (pathname.includes('/bip/')) {
-			addBipHeading();
-			addAriaRoleToBipMenu();
-			addToBipMetaTitle();
-			addAriaLabelToNavs();
-			addAriaLabelToBipDownloads();
-		} else if (pathname === '/bip') {
-			addBipHeading();
-			addAriaRoleToBipMenu();
-			addAriaLabelToNavs();
-		} */
 	});
 	// Funkcje dla BIP
 	function initializeBipPageFeatures(pathname) {
@@ -39,8 +26,8 @@
 		addAriaLabelToBipDownloads();
 		generateBipSubpages();
 	}
+	// Wszystkie funkcje dla głównych stron
 	function initializeMainPageFeatures(pathname) {
-		// Wszystkie funkcje dla głównych stron
 		addEuProjectsLink();
 		addScrollToTopButton();
 		addBackButtonToBreadcrumbs();
@@ -269,7 +256,7 @@
 
 	// 10. Dodanie do nagłówka h2 tekstu z tytułu artykułu BIP gdy nie był dodany w CMS
 	// Dodanie id do nagłówka <h2> i menu
-	// zmiana z-index dla nagłówka BIP
+	// zmiana z-index dla nagłówka BIP (trzykolorowy pasek, przyciski pomijania)
 	function addBipHeading() {
 		const bipTitle = document.querySelector(
 			'span.bip-title__content__title',
@@ -561,4 +548,3 @@
 		}
 	}
 })();
-document.dispatchEvent(new Event('DOMContentLoaded'));

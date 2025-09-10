@@ -1,33 +1,9 @@
 (function () {
-	// Cache dla często używanych selektorów
-	const selectors = {
-		menuIconEu: '.menu-icon-eu',
-		breadcrumbItem: '.breadcrumb__item',
-		sections: 'section',
-		mobileMenuButton: 'a.menu__button.menu__button--mobile',
-		desktopMenuButton: 'a.menu__button.menu__button--desktop',
-		skipButton: 'a.btn-skip.btn-skip--base',
-		main: 'main',
-		toTop: '#toTop',
-		articlesGrid: '.articles-grid.js-pagination-result-container-news',
-		publicationDate: 'time.article-tile__publication-date',
-		mailtoLinks: 'a[href^="mailto:"]',
-		informationBlockBtn: '.information-block__btn',
-		bipHeader: '#menu',
-		bipMenu: 'aside.bip-menu-left',
-		bipMenuHeader: 'h2.visuallyhidden',
-		bipTitleElement: 'span.bip-title__content__title',
-		bipHeadingElement: 'h2.bip__heading',
-		breadcrumb: 'nav[class*="breadcrumb"]',
-		navMenu: '.menu__nav.nav.js-nav',
-	};
-
 	document.addEventListener('DOMContentLoaded', () => {
 		const pathname = document.location.pathname;
 		const isSpecialPage =
-			pathname.includes('bip') ||
-			pathname.includes('sklep') ||
-			pathname.includes('/mapa-parku');
+			pathname.includes('sklep') || pathname.includes('/mapa-parku');
+		const bipPage = pathname.includes('/bip');
 
 		if (!isSpecialPage) {
 			initializeMainPageFeatures(pathname);
@@ -38,31 +14,49 @@
 			initializeMapLegend();
 		}
 		// Funkcje specyficzne dla BIP
-		if (document.location.pathname.includes('/bip/')) {
-			addBipHeading();
-			addToBipMetaTitle();
-			addAriaLabelToBreadcrumbs();
-			addAriaRoleToBipMenu();
+		if (bipPage) {
+			initializeBipPageFeatures(pathname);
 		}
-	});
 
+		/* if (pathname.includes('/bip/')) {
+			addBipHeading();
+			addAriaRoleToBipMenu();
+			addToBipMetaTitle();
+			addAriaLabelToNavs();
+			addAriaLabelToBipDownloads();
+		} else if (pathname === '/bip') {
+			addBipHeading();
+			addAriaRoleToBipMenu();
+			addAriaLabelToNavs();
+		} */
+	});
+	// Funkcje dla BIP
+	function initializeBipPageFeatures(pathname) {
+		addBipHeading();
+		addAriaRoleToBipMenu();
+		addAriaLabelToNavs('.bip-menu-left');
+		addToBipMetaTitle(pathname);
+		addAriaLabelToBipDownloads();
+		generateBipSubpages();
+	}
 	function initializeMainPageFeatures(pathname) {
 		// Wszystkie funkcje dla głównych stron
 		addEuProjectsLink();
 		addScrollToTopButton();
 		addBackButtonToBreadcrumbs();
-		removeMobileShopLink();
+		removeMobileBilety();
 		addPublicationDates(pathname);
 		cloakEmailAddresses();
 		removeMultikonto();
 		removeFormButtonFromZalatwSprawa(pathname);
-		addAriaRoleToBipMenu();
-		addAriaLabelToBreadcrumbs();
+		addAriaLabelToNavs('.menu__nav.nav.js-nav');
+		addHeadingToSubpages();
+		addToSiteMetaTitle(pathname);
 	}
 
 	// 1. Dodanie linku do projektów unijnych
 	function addEuProjectsLink() {
-		const euIcon = document.querySelector(selectors.menuIconEu);
+		const euIcon = document.querySelector('.menu-icon-eu');
 		if (!euIcon) return;
 
 		const wrapper = document.createElement('a');
@@ -79,16 +73,12 @@
 
 	// 2. Dodanie przycisku powrotu do breadcrumbs
 	function addBackButtonToBreadcrumbs() {
-		const breadcrumbItems = document.querySelectorAll(
-			selectors.breadcrumbItem,
-		);
-		//const sections = document.querySelectorAll(selectors.sections);
+		const breadcrumbItems = document.querySelectorAll('.breadcrumb__item');
+		const backButton = document.getElementById('backBtn');
 
-		if (breadcrumbItems.length === 0 /*  || sections.length === 0 */)
-			return;
-		/* const lastSection = sections[sections.length - 1];
-		if (lastSection.className === 'banner') return; */
-		const mainContentBlock = document.querySelector(selectors.main);
+		if (breadcrumbItems.length === 0 || backButton !== null) return;
+
+		const mainContentBlock = document.querySelector('main');
 		if (!mainContentBlock) return;
 
 		const secondLastCrumb = breadcrumbItems[breadcrumbItems.length - 2];
@@ -96,9 +86,9 @@
 
 		const backButtonHtml = `
             <div class="two-columns block-container container">
-                <a id="backBtn" role="button" aria-label="Wróć do kategorii nadrzędnej: ${secondLastCrumb.textContent}" class="btn btn--white information-block__btn back__btn_user"
+                <a id="backBtn" tabindex="-1"
                    href="${secondLastCrumb.firstElementChild.href}">
-                    Wróć do kategorii: ${secondLastCrumb.textContent}
+                    <button class="btn btn--white information-block__btn back__btn_user" aria-label="Wróć do kategorii nadrzędnej: ${secondLastCrumb.textContent}">Wróć do kategorii: ${secondLastCrumb.textContent}</button>
                 </a>
             </div>
         `;
@@ -106,10 +96,10 @@
 		mainContentBlock.insertAdjacentHTML('beforeend', backButtonHtml);
 	}
 
-	// 3. Usunięcie linku sklepu z menu mobilnego
-	function removeMobileShopLink() {
+	// 3. Usunięcie linku bilety z menu mobilnego
+	function removeMobileBilety() {
 		const mobileMenuButton = document.querySelector(
-			selectors.mobileMenuButton,
+			'a.menu__button.menu__button--mobile',
 		);
 		if (!mobileMenuButton) return;
 
@@ -125,17 +115,19 @@
 
 	// 4. Dodanie przycisku przewijania do góry
 	function addScrollToTopButton() {
-		const existingSkipButton = document.querySelector(selectors.skipButton);
+		const existingSkipButton = document.querySelector(
+			'a.btn-skip.btn-skip--base',
+		);
 
 		// Sprawdź czy przycisk już istnieje lub czy istnieje przycisk skip
 		if (
 			(existingSkipButton && existingSkipButton.clientHeight > 0) ||
-			document.querySelector(selectors.toTop)
+			document.querySelector('#toTop')
 		) {
 			return;
 		}
 
-		const main = document.querySelector(selectors.main);
+		const main = document.querySelector('main');
 		if (!main) return;
 
 		const buttonHtml = `
@@ -155,7 +147,7 @@
 		main.insertAdjacentHTML('beforeend', buttonHtml);
 
 		// Dodanie funkcjonalności przewijania
-		const scrollButton = document.querySelector(selectors.toTop);
+		const scrollButton = document.querySelector('#toTop');
 		let ticking = false;
 
 		function updateScrollButton() {
@@ -180,7 +172,7 @@
 
 		function updatePublicationDates() {
 			const publicationDates = document.querySelectorAll(
-				selectors.publicationDate,
+				'time.article-tile__publication-date',
 			);
 
 			publicationDates.forEach((date) => {
@@ -198,7 +190,9 @@
 
 		// Observer tylko na stronie aktualności (przycisk "pokaż więcej")
 		if (pathname === '/aktualnosci') {
-			const articlesGrid = document.querySelector(selectors.articlesGrid);
+			const articlesGrid = document.querySelector(
+				'.articles-grid.js-pagination-result-container-news',
+			);
 			if (articlesGrid) {
 				const observer = new MutationObserver(updatePublicationDates);
 				observer.observe(articlesGrid, {
@@ -213,7 +207,7 @@
 
 	// 6. Maskowanie adresów email
 	function cloakEmailAddresses() {
-		const mailLinks = document.querySelectorAll(selectors.mailtoLinks);
+		const mailLinks = document.querySelectorAll('a[href^="mailto:"]');
 		if (mailLinks.length === 0) return;
 
 		mailLinks.forEach((mailLink) => {
@@ -236,7 +230,7 @@
 	// 7. Usunięcie multikonta
 	function removeMultikonto() {
 		const multikontoButton = document.querySelector(
-			selectors.desktopMenuButton,
+			'a.menu__button.menu__button--desktop',
 		);
 		multikontoButton?.remove();
 	}
@@ -245,9 +239,7 @@
 	function removeFormButtonFromZalatwSprawa(pathname) {
 		if (!pathname.includes('/zalatw-sprawe')) return;
 
-		const formButton = document.querySelector(
-			selectors.informationBlockBtn,
-		);
+		const formButton = document.querySelector('.information-block__btn');
 		formButton?.remove();
 	}
 
@@ -275,14 +267,16 @@
 			.forEach((element) => element.parentElement?.remove());
 	}
 
-	// 10. Dodanie do nagłówka h2 tekstu z tytułu artykułu BIP
+	// 10. Dodanie do nagłówka h2 tekstu z tytułu artykułu BIP gdy nie był dodany w CMS
 	// Dodanie id do nagłówka <h2> i menu
 	// zmiana z-index dla nagłówka BIP
 	function addBipHeading() {
-		const bipTitle = document.querySelector(selectors.bipTitleElement);
-		const bipHeading = document.querySelector(selectors.bipHeadingElement);
-		const bipMenu = document.querySelector(selectors.bipMenuHeader);
-		const bipHeader = document.querySelector(selectors.bipHeader);
+		const bipTitle = document.querySelector(
+			'span.bip-title__content__title',
+		);
+		const bipHeading = document.querySelector('h2.bip__heading');
+		const bipMenu = document.querySelector('h2.visuallyhidden');
+		const bipHeader = document.querySelector('#menu');
 		if (
 			bipHeader &&
 			bipHeader.hasAttribute('id') &&
@@ -300,11 +294,26 @@
 			bipHeading.innerText = bipTitle.innerText;
 		}
 	}
-	// 11. Dodanie tekstu do tytułu do BIP w tagu
-	function addToBipMetaTitle() {
+	// 11. Dodanie tekstu do tytułu do BIP w tagu <title>
+	function addToBipMetaTitle(pathname) {
 		const titleAdd = ' — BIP — Kampinoski Park Narodowy';
 		const hTitle = document.querySelector('head title');
 		if (
+			pathname !== '/bip' &&
+			hTitle &&
+			hTitle.textContent &&
+			!hTitle.textContent.startsWith(titleAdd) &&
+			!hTitle.textContent.includes('Biuletyn')
+		) {
+			hTitle.textContent = hTitle.textContent + titleAdd;
+		}
+	}
+	// 11a. Dodanie tekstu do tytułu strony w tagu <title>
+	function addToSiteMetaTitle(pathname) {
+		const titleAdd = ' — Kampinoski Park Narodowy';
+		const hTitle = document.querySelector('head title');
+		if (
+			pathname !== '/' &&
 			hTitle &&
 			hTitle.textContent &&
 			!hTitle.textContent.startsWith(titleAdd)
@@ -314,15 +323,15 @@
 	}
 	// 12. Dodanie aria-role do menu BIP
 	function addAriaRoleToBipMenu() {
-		const bipMenu = document.querySelector(selectors.bipMenu);
+		const bipMenu = document.querySelector('aside.bip-menu-left');
 		if (bipMenu && !bipMenu.hasAttribute('role')) {
 			bipMenu.setAttribute('role', 'navigation');
 		}
 	}
-	// 13. Dodanie aria-label do nav
-	function addAriaLabelToBreadcrumbs() {
-		const breadcrumb = document.querySelector(selectors.breadcrumb);
-		const navMenu = document.querySelector(selectors.navMenu);
+	// 13. Dodanie aria-label do nav - menu główne i breadcrumbs
+	function addAriaLabelToNavs(selector) {
+		const breadcrumb = document.querySelector('nav[class*="breadcrumb"]');
+		const navMenu = document.querySelector(selector);
 		if (breadcrumb && !breadcrumb.hasAttribute('aria-label')) {
 			breadcrumb.setAttribute('aria-label', 'Ścieżka powrotu');
 		}
@@ -330,4 +339,226 @@
 			navMenu.setAttribute('aria-label', 'Główne menu nawigacyjne');
 		}
 	}
+	// 14. Dodanie nagłówka dla stron subbpages
+	function addHeadingToSubpages() {
+		const subPagesBlock = document.querySelector('section.subpages-block');
+		const html = `<section class="visuallyhidden">
+    <h2 class="block__title">Dostępne podstrony</h2></section>`;
+		if (
+			subPagesBlock &&
+			subPagesBlock.previousElementSibling.nodeName !== 'SECTION'
+		) {
+			subPagesBlock.insertAdjacentHTML('beforebegin', html);
+		}
+	}
+	//14a Dodanie nagłówka do srteon BIP subpages oraz generowanie kafelków z linkami do podstron
+	function generateBipSubpages() {
+		// Array of menu items for Kampinoski Park Narodowy BIP website
+		const data = [
+			{
+				name: 'Status Prawny',
+				link: 'https://kampn.gov.pl/bip/status-prawny',
+				items: [
+					{
+						name: 'Plan ochrony',
+						link: 'https://kampn.gov.pl/bip/plan-ochrony',
+					},
+					{
+						name: 'Plan Zadań Ochronnych',
+						link: 'https://kampn.gov.pl/bip/plan-zadan-ochronnych',
+					},
+				],
+			},
+			{
+				name: 'Kampinoski Park Narodowy',
+				link: 'https://kampn.gov.pl/bip/kampinoski-park-narodowy',
+				items: [
+					{
+						name: 'Dyrektor',
+						link: 'https://kampn.gov.pl/bip/dyrektor',
+					},
+					{
+						name: 'Kierownictwo',
+						link: 'https://kampn.gov.pl/bip/kierownictwo',
+					},
+					{
+						name: 'Dane teleadresowe',
+						link: 'https://kampn.gov.pl/bip/dane-teleadresowe',
+					},
+					{
+						name: 'Statut i regulamin organizacyjny',
+						link: 'https://kampn.gov.pl/bip/statut-i-regulamin-organizacyjny',
+					},
+					{
+						name: 'Schemat organizacyjny',
+						link: 'https://kampn.gov.pl/bip/schemat-organizacyjny',
+					},
+				],
+			},
+			{
+				name: 'Zarządzenia Dyrektora KPN',
+				link: 'https://kampn.gov.pl/bip/zarzadzenia-dyrektora-kpn',
+				items: [
+					{
+						name: 'Zarządzenia dyrektora',
+						link: 'https://kampn.gov.pl/bip/zarzadzenia-dyrektora',
+					},
+					{
+						name: 'Struktura własnościowa i majątek',
+						link: 'https://kampn.gov.pl/bip/struktura-wlasnosciowa-i-majatek',
+					},
+					{
+						name: 'Dzierżawy i najem nieruchomości',
+						link: 'https://kampn.gov.pl/bip/dzierzawy-i-najem-nieruchomosci',
+					},
+					{
+						name: 'Praca w Parku',
+						link: 'https://kampn.gov.pl/bip/praca-w-parku',
+					},
+					{
+						name: 'Ogłoszenia',
+						link: 'https://kampn.gov.pl/bip/ogloszenia',
+					},
+					{
+						name: 'Sprawozdania',
+						link: 'https://kampn.gov.pl/bip/sprawozdania',
+					},
+				],
+			},
+			{
+				name: 'Zamówienia publiczne',
+				link: 'https://kampn.gov.pl/bip/zamowienia-publiczne-1',
+				items: [
+					{
+						name: 'Rozeznania rynku',
+						link: 'https://kampn.gov.pl/bip/rozpoznanie-rynku',
+					},
+					{
+						name: 'Zamówienia publiczne powyżej 130.000,00 zł',
+						link: 'https://kampn.gov.pl/bip/zamowienia-publiczne-powyzej-130-000-00-zl',
+					},
+					{
+						name: 'Dzierżawy gruntów',
+						link: 'https://kampn.gov.pl/bip/dzierzawy-gruntow',
+					},
+					{
+						name: 'Pozostałe postępowania',
+						link: 'https://kampn.gov.pl/bip/pozostale-postepowania',
+					},
+					{
+						name: 'Plany zamówień',
+						link: 'https://kampn.gov.pl/bip/plany-zamowien',
+					},
+					{
+						name: 'Archiwum ogłoszeń',
+						link: 'https://kampn.gov.pl/bip/archiwum-ogloszen',
+					},
+				],
+			},
+		];
+
+		const currentUrl = window.location.href;
+		const tileImg =
+			'/build/assets/kampinoski-apple-icon-114x114-2ae80f8c.png';
+		//Generate tiles
+		/**
+		 * Generates HTML tiles from the provided data array.
+		 * @param {Array} data - The array of objects representing menu items.
+		 * @returns {string} - The generated HTML string for the tiles.
+		 */
+		function generateTiles(data, currentUrl) {
+			return data
+				.filter((item) => item.items && item.link === currentUrl)
+				.map((item) => {
+					return item.items
+						.map((subitem) => {
+							const { name, link } = subitem;
+							return `
+					<li class="subpages-block__list__item">
+			<a href="${link}" class="article-tile" aria-label="Idź do strony ${name}">
+				<div class="article-tile__image-wrapper article-tile__image-wrapper--KAMPINOSKI">
+					<img class="article-tile__logo" src="${tileImg}"
+						alt="Logotyp parku">
+				</div>
+				<div class="article-tile__content">
+					<h3 class="article-tile__title">${name}</h3>
+					<div class="article-tile__excerpt"></div>
+					<div class="article-tile__misc">
+						<div class="article-tile__arrow-link">
+							<svg width="22" height="21" viewBox="0 0 22 21" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								        <title>Idź do strony ${name}</title>
+								<path d="M12.0049 2.1665L20.0024 10.164L12.0049 18.1615" stroke="#6CD370"
+									stroke-width="2"></path>
+								<path d="M0 10.1597H19.3274" stroke="#6CD370" stroke-width="2"></path>
+							</svg>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+	`;
+						})
+						.join('');
+				})
+				.join('');
+		}
+		const matchingItems = data.filter(
+			(item) => item.link && item.link === currentUrl,
+		);
+		if (matchingItems.length > 0) {
+			const htmlTemplate = `
+	<div class="container subpages-block">
+	<h2>Dostępne podstrony</h2>
+	<ul class="subpages-block__list">
+		${generateTiles(data, currentUrl)}
+	</ul>
+	</div>`;
+			const handler = document.querySelector('.bip-title__content');
+			if (handler) {
+				handler.insertAdjacentHTML('afterend', htmlTemplate);
+			}
+		}
+	}
+	// 15. Dodanie aria-label do przycisków pobierania załączników
+	function addAriaLabelToBipDownloads() {
+		const zipAttachement = document.querySelector(
+			'a.bip-attachments__button__btn',
+		);
+		const docAttachement = document.querySelectorAll(
+			'a.bip-attachments__container__item__title',
+		);
+		if (zipAttachement && !zipAttachement.hasAttribute('aria-label')) {
+			zipAttachement.setAttribute(
+				'aria-label',
+				'Pobierz załącznik jako archiwumZIP',
+			);
+		}
+		if (docAttachement.length > 0) {
+			docAttachement.forEach(function (el) {
+				if (el.hasAttribute('aria-label')) return;
+				const name = el.children[1].textContent;
+				const ext = el.href.split('.').slice(-1).toString();
+				let label;
+				switch (ext) {
+					case 'doc':
+					case 'docx':
+						label = 'Pobierz ' + name + ' w formacie MS Word';
+						break;
+					case 'xlsx':
+					case 'xls':
+						label = 'Pobierz ' + name + ' w formacie MS Excel';
+						break;
+					case 'odt':
+					case 'ods':
+						label = 'Pobierz ' + name + ' w formacie OpenDocument';
+						break;
+					default:
+						label = 'Pobierz ' + name + ' w formacie ' + ext;
+				}
+				el.setAttribute('aria-label', label);
+			});
+		}
+	}
 })();
+document.dispatchEvent(new Event('DOMContentLoaded'));

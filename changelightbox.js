@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const buttonContainer = document.querySelectorAll(
 			'.text-with-images__images',
 		);
-		if (buttonContainer != null) {
+		if (buttonContainer != 0) {
 			let imgData = {};
 			buttonContainer.forEach((bc) => {
 				let buttons = bc.querySelectorAll('button.js-fullscreen');
